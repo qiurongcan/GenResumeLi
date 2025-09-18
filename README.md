@@ -1,2 +1,13 @@
-# GenResumeLi
-使用python生成word版本简历
+# 2025使用python生成word版本简历
+
+文件说明
+```shell
+|-简历编码目录.xlsx             待生成的简历文件数量
+|-简历投递变量.docx             所有原始变量存储的文件
+|-男-计算机专业.docx            demo
+```
+
+
+
+
+
