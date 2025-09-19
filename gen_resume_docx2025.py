@@ -124,6 +124,9 @@ for i in tqdm(range(len(df))):
     在职时间：{proj['workTime']}
     工作内容：
     {proj['workDescription']}
+    拥有技能：{proj["skills"]}
+    当时月薪：{proj['salary']}
+    对这家公司隐藏我的信息（开启）
     """)
 
     # 项目经历,复用proj
