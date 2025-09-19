@@ -118,7 +118,7 @@ for i in tqdm(range(len(df))):
     期望行业：{inform.tgt_career[major].desire_industry}
     求职偏好：空着不写
     工作城市：北京、上海、广州、西安、{random_city}
-    薪资要求：
+    薪资要求：{inform.desire_salary[major][level+degree]}
     工作性质：全职
     """)
     # {inform.desire_salary[major][level+degree]}
@@ -147,12 +147,13 @@ for i in tqdm(range(len(df))):
 
     school = random.choice(inform.schools[living_place][level+degree])
 
+    # 这里的专业存在问题 需要修改为：计算机：计算机应用技术； 会计：大数据与会计
     if degree == "专科":
         edu_exp = f"""
     （大专阶段）
     学历：大专-统招
     学校名称：{school}
-    所学专业：{inform.major[major]}
+    所学专业：{inform.junior_major[major]} 
     在校时间：2023.9-2026.6
     """
 

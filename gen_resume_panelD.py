@@ -109,7 +109,7 @@ for i in tqdm(range(len(df))):
     期望行业：{inform.tgt_career[major].desire_industry}
     求职偏好：空着不写
     工作城市：北京、上海、广州、西安、{random_city}
-    薪资要求：
+    薪资要求：{inform.desire_salary[major][degreeA+degreeB]}
     工作性质：全职
     """)
     # {inform.desire_salary[major][level+degree]}

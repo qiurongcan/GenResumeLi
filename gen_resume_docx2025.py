@@ -17,7 +17,7 @@ from pprint import pprint
 
 import random
 
-dir_path = r'Resume_docx'
+dir_path = r'Resume_PanelA'
 os.makedirs(dir_path, exist_ok=True)
 
 inform = Box.from_json(filename="information.json")

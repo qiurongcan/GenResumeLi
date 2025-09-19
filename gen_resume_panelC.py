@@ -34,11 +34,11 @@ df = pd.read_excel(r'简历编码目录.xlsx', index_col=None, sheet_name=sheet)
 for i in tqdm(range(len(df))):
 
     resume_id = df.iloc[i,0]
-    major = df.iloc[i, 1]
-    sex = df.iloc[i, 2]
-    degree = df.iloc[i, 3]
-    level = df.iloc[i, 4]
-    nation = df.iloc[i, 5]
+    major = df.iloc[i, 4]
+    sex = df.iloc[i, 1]
+    degree = df.iloc[i, 2]
+    level = df.iloc[i, 3]
+    nation = "汉族"
 
     # 根据性别随机生成名字
     if nation == "汉族":
@@ -141,13 +141,13 @@ for i in tqdm(range(len(df))):
     （本科阶段）
     学历：本科-统招
     学校名称：{school}
-    所学专业：{major}
+    所学专业：{inform.major[major]}
     在校时间：2019.9-2023.6
 
     （硕士阶段）
     学历：硕士-统招
     学校名称：{school}
-    所学专业：{major}
+    所学专业：{inform.major[major]}
     在校时间：2023.9-2026.6
 """
     else:
@@ -155,7 +155,7 @@ for i in tqdm(range(len(df))):
     （本科阶段）
     学历：本科-统招
     学校名称：{school}
-    所学专业：{major}
+    所学专业：{inform.major[major]}
     在校时间：2022.9-2026.6        
     """
 

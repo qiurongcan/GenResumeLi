@@ -1,0 +1,5 @@
+python-box
+python-docx
+pandas
+numpy
+tqdm
