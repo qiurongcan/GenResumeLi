@@ -17,13 +17,13 @@ from pprint import pprint
 
 import random
 
-dir_path = r'Resume_PanelE'
+dir_path = r'Resume_panelC'
 os.makedirs(dir_path, exist_ok=True)
 
 inform = Box.from_json(filename="information.json")
 # pprint(inform)
 
-sheet = 'PanelE_大专生'
+sheet = 'PanelC_专业'
 
 df = pd.read_excel(r'简历编码目录.xlsx', index_col=None, sheet_name=sheet)
 # print(df.head(3))
@@ -32,23 +32,13 @@ df = pd.read_excel(r'简历编码目录.xlsx', index_col=None, sheet_name=sheet)
 
 
 for i in tqdm(range(len(df))):
-    
+
     resume_id = df.iloc[i,0]
     major = df.iloc[i, 1]
     sex = df.iloc[i, 2]
     degree = df.iloc[i, 3]
-    level0 = df.iloc[i, 4]
-    if degree == "大专":
-        degree = "专科"
-    
-    level = None
-    if level0 == "好":
-        level = "高质"
-    else:
-        level = "普通"
-
-
-    nation = "汉族"
+    level = df.iloc[i, 4]
+    nation = df.iloc[i, 5]
 
     # 根据性别随机生成名字
     if nation == "汉族":
@@ -98,8 +88,8 @@ for i in tqdm(range(len(df))):
         微信号：与注册微信一致（空着不写）
     """)
 
-    # 个人优势 需要修改为专科的
-    personAdvantage = inform.junior_project[major]['personAdvantage']
+    # 个人优势
+    personAdvantage = inform.project[major]['personAdvantage']
 
     h1 = doc.add_heading("2 个人优势", level=2)
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
@@ -118,13 +108,12 @@ for i in tqdm(range(len(df))):
     期望行业：{inform.tgt_career[major].desire_industry}
     求职偏好：空着不写
     工作城市：北京、上海、广州、西安、{random_city}
-    薪资要求：
+    薪资要求：{inform.desire_salary[major][level+degree]}
     工作性质：全职
     """)
-    # {inform.desire_salary[major][level+degree]}
 
-    # 工作实习经历 专科的
-    proj = inform.junior_project[major]
+    # 工作实习经历
+    proj = inform.project[major]
     
     h1 = doc.add_heading("5 工作实习经历", level=2)
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
@@ -145,15 +134,29 @@ for i in tqdm(range(len(df))):
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     doc.add_paragraph(proj["experience"])
 
-    school = random.choice(inform.schools[living_place][level+degree])
+    school = random.choice(inform.schools[living_place][level])
 
-    if degree == "专科":
+    if degree == "硕士":
         edu_exp = f"""
-    （大专阶段）
-    学历：大专-统招
+    （本科阶段）
+    学历：本科-统招
     学校名称：{school}
     所学专业：{major}
     在校时间：2019.9-2023.6
+
+    （硕士阶段）
+    学历：硕士-统招
+    学校名称：{school}
+    所学专业：{major}
+    在校时间：2023.9-2026.6
+"""
+    else:
+        edu_exp = f"""
+    （本科阶段）
+    学历：本科-统招
+    学校名称：{school}
+    所学专业：{major}
+    在校时间：2022.9-2026.6        
     """
 
     h1 = doc.add_heading("7 教育经历", level=2)
@@ -188,7 +191,7 @@ for i in tqdm(range(len(df))):
     doc.save(f"{dir_path}/{resume_id}.docx")
     # break
     # if i == 10:
-        # break
+    #     break
 
 
 
