@@ -144,13 +144,13 @@ for i in tqdm(range(len(df))):
     （本科阶段）
     学历：本科-统招
     学校名称：{schoolA}
-    所学专业：{major}
+    所学专业：{inform.major[major]}
     在校时间：2019.9-2023.6
 
     （硕士阶段）
     学历：硕士-统招
     学校名称：{schoolB}
-    所学专业：{major}
+    所学专业：{inform.major[major]}
     在校时间：2023.9-2026.6
 """
     else:

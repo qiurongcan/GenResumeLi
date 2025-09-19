@@ -152,8 +152,8 @@ for i in tqdm(range(len(df))):
     （大专阶段）
     学历：大专-统招
     学校名称：{school}
-    所学专业：{major}
-    在校时间：2019.9-2023.6
+    所学专业：{inform.major[major]}
+    在校时间：2023.9-2026.6
     """
 
     h1 = doc.add_heading("7 教育经历", level=2)
