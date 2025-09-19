@@ -1,3 +1,11 @@
+<!--
+ * @@Descripttion: 
+ * @@version: 
+ * @@encoding: utf-8
+ * @@Author: qiurongcan
+ * @Date: 2025-09-19 16:13:14
+ * @LastEditTime: 2025-09-19 17:19:13
+-->
 # 2025使用python生成word版本简历
 
 ## 文件说明
@@ -13,6 +21,14 @@
 **run**
 ```shell
 python gen_resume_docx2025.py
+```
+**run others**
+```shell
+# 生成PanelD
+python gen_resume_panelD.py
+
+# 生成PanelE
+python gen_resum_panelE.py
 ```
 
 ## 注意事项
