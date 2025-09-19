@@ -17,7 +17,7 @@ from pprint import pprint
 
 import random
 
-dir_path = r'Resume_docx'
+dir_path = r'Resume_PanelB'
 os.makedirs(dir_path, exist_ok=True)
 
 inform = Box.from_json(filename="information.json")
@@ -39,6 +39,9 @@ for i in tqdm(range(len(df))):
     degree = df.iloc[i, 3]
     # level = df.iloc[i, 4]
     # nation = df.iloc[i, 5]
+    level = df.iloc[i, 4]
+    area = level[:2]
+    rank = level[2:]
     nation = "汉族" # 海归默认汉族
 
     # 根据性别随机生成名字
@@ -109,7 +112,7 @@ for i in tqdm(range(len(df))):
     期望行业：{inform.tgt_career[major].desire_industry}
     求职偏好：空着不写
     工作城市：北京、上海、广州、西安、{random_city}
-    薪资要求：{inform.desire_salary[major][level+degree]}
+    薪资要求：{inform.desire_salary[major][rank]}
     工作性质：全职
     """)
 
@@ -135,14 +138,21 @@ for i in tqdm(range(len(df))):
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     doc.add_paragraph(proj["experience"])
 
-    school = random.choice(inform.schools[living_place][level])
+    school_b = random.choice(inform.schools[living_place]["985"])
+    school = inform.foreign_schools[rank][area]
 
     if degree == "硕士":
         edu_exp = f"""
+    （本科阶段）
+    学历：本科-统招
+    学校名称：{school_b}
+    所学专业：{inform.major[major]}
+    在校时间：2019.9-2023.6
+
     （硕士阶段）
     学历：硕士-非统招
     学校名称：{school}
-    所学专业：{major}
+    所学专业：{inform.major[major]}
     在校时间：2023.9-2026.6
 """
     else:
@@ -184,7 +194,7 @@ for i in tqdm(range(len(df))):
     #     major_id = 2
 
     doc.save(f"{dir_path}/{resume_id}.docx")
-    break
+    # break
     # if i == 10:
     #     break
 
