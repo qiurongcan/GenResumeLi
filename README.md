@@ -4,7 +4,7 @@
  * @@encoding: utf-8
  * @@Author: qiurongcan
  * @Date: 2025-09-19 16:13:14
- * @LastEditTime: 2025-09-19 17:19:13
+ * @LastEditTime: 2025-09-22 11:32:40
 -->
 # 2025使用python生成word版本简历
 
@@ -20,15 +20,24 @@
 
 **run**
 ```shell
-python gen_resume_docx2025.py
+# panelA
+python gen_resume_docx2025.py # 民族
 ```
 **run others**
 ```shell
+
+# 生成PanelB
+python gen_resume_panelB.py # 海归
+
+
+# 生成PanelC
+python gen_resume_panelC.py # 专业
+
 # 生成PanelD
-python gen_resume_panelD.py
+python gen_resume_panelD.py # 第一学历
 
 # 生成PanelE
-python gen_resum_panelE.py
+python gen_resum_panelE.py # 大专生
 ```
 
 ## 注意事项
@@ -38,7 +47,7 @@ python gen_resum_panelE.py
 sheet = 'PanelA_民族' # choices = [PanelA_民族, PanelB_海归, ...] 详细根据 简历编码目录.xlsx文件
 df = pd.read_excel(r'简历编码目录.xlsx', index_col=None, sheet_name=sheet)
 ```
-2. 详细了解一下 `information.json` 文件, 其中部分数据结构尚未填充
+2. 详细了解一下 `information.json` 文件，如果简历出现了问题，则修改information中的变量，实现BUG的修改
 
 
 
