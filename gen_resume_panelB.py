@@ -130,6 +130,7 @@ for i in tqdm(range(len(df))):
     {proj['workDescription']}
     拥有技能：{proj["skills"]}
     当时月薪：{proj['salary']}
+    （勾选此段经历为实习经历）
     对这家公司隐藏我的信息（开启）
     """)
 
