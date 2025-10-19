@@ -16,14 +16,14 @@ from box import Box
 from pprint import pprint
 
 import random
-
-dir_path = r'New_Resume_PanelB'
+# 生成第一学历
+dir_path = r'New_Resume_PanelD'
 os.makedirs(dir_path, exist_ok=True)
 
 inform = Box.from_json(filename="information.json")
 # pprint(inform)
 
-sheet = 'PanelB_海归'
+sheet = 'PanelD_第一学历'
 
 df = pd.read_excel(r'简历编码目录.xlsx', index_col=None, sheet_name=sheet)
 # print(df.head(3))
@@ -36,13 +36,10 @@ for i in tqdm(range(len(df))):
     resume_id = df.iloc[i,0]
     major = df.iloc[i, 1]
     sex = df.iloc[i, 2]
-    degree = df.iloc[i, 3]
-    # level = df.iloc[i, 4]
-    # nation = df.iloc[i, 5]
-    level = df.iloc[i, 4]
-    area = level[:2]
-    rank = level[2:]
-    nation = "汉族" # 海归默认汉族
+    degree = "硕士" # 默认都是硕士
+    degreeA = df.iloc[i, 3]
+    degreeB = df.iloc[i, 4]
+    nation = "汉族"
 
     # 根据性别随机生成名字
     if nation == "汉族":
@@ -62,7 +59,9 @@ for i in tqdm(range(len(df))):
     living_place = random.choice(inform.birth_place)
     district = random.choice(inform.district[living_place])
     
-    
+    # 工作实习经历
+    proj = inform.project[major]
+
     # 创建新文档
     doc = Document()
     style = doc.styles["Normal"]
@@ -77,11 +76,10 @@ for i in tqdm(range(len(df))):
     h0 = doc.add_heading(f"COSER2025 {sheet} {major}", level=1)
     h0.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
 
-    # 1.个人信息
+    # 个人信息
     h1 = doc.add_heading("1 个人信息", level=2)
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     doc.add_paragraph(f"""
-        头像：统一按性别使用给定头像
         姓名：{name}
         性别：{sex}
         显示方式：显示
@@ -95,49 +93,39 @@ for i in tqdm(range(len(df))):
         微信号：与注册微信一致（空着不写）
     """)
 
-    proj = inform.project[major]
-    
-
     # 2. 技能熟练程度
     h1 = doc.add_heading("2 技能熟练度", level=2)
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     doc.add_paragraph(proj["professionalSkills"] + '\n设置简历内的显示方式（选择默认选择进度条）')
 
-    # # 个人优势
-    # personAdvantage = inform.project[major]['personAdvantage']
-
-    # h1 = doc.add_heading("2 个人优势", level=2)
-    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
-    # doc.add_paragraph(personAdvantage)
-
-    # 3. 求职状态
+    # 3.求职状态
     h1 = doc.add_heading("3 求职状态", level=2)
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     doc.add_paragraph("正在找工作（在“我的”页面点击头像—编辑资料—基本资料，倒数第四行可以设置求职状态为“正在找工作”）")
 
     # 4.教育经历
-    school_b = random.choice(inform.schools[living_place]["985"])
-    school = inform.foreign_schools[rank][area]
+    schoolA = random.choice(inform.schools[living_place][degreeA])
+    schoolB = random.choice(inform.schools[living_place][degreeB])
 
     if degree == "硕士":
         edu_exp = f"""
     （本科阶段）
     学历：本科
-    学校名称：{school_b}
+    学校名称：{schoolA}
     所学专业：{inform.major[major]}
     在校时间：2019.9-2023.6
 
     （硕士阶段）
     学历：硕士
-    学校名称：{school}
+    学校名称：{schoolB}
     所学专业：{inform.major[major]}
     在校时间：2023.9-2026.6
 """
     else:
         edu_exp = f"""
     （本科阶段）
-    学历：本科-统招
-    学校名称：{school}
+    学历：本科
+    学校名称：{schoolA}
     所学专业：{major}
     在校时间：2022.9-2026.6        
     """
@@ -150,6 +138,7 @@ for i in tqdm(range(len(df))):
     h1 = doc.add_heading("5 在校经历-学生职务", level=2)
     h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
     paragraph = doc.add_paragraph(inform.school_exp_newcoder)
+
 
     # 6工作实习经历
     h1 = doc.add_heading("6 工作实习经历", level=2)
@@ -185,7 +174,7 @@ for i in tqdm(range(len(df))):
     期望职位：{inform.tgt_career[major].desire_career}
     求职偏好：空着不写
     工作城市：全国
-    薪资要求：{inform.desire_salary[major][rank]}
+    薪资要求：{inform.desire_salary[major][degreeA+degreeB]}
     求职状态：在校-正在找工作
     自定义简历中的位置：设置为“求职意向完整展示在简历内”
     """)
@@ -203,7 +192,7 @@ for i in tqdm(range(len(df))):
     1、	我现在：正在找工作
     2、	意向职位：{inform.tgt_career[major].desire_career}
     3、	意向地点：全国
-    4、	意向年薪：{inform.desire_salary_year[major][rank]}
+    4、	意向年薪：{inform.desire_salary_year[major][degreeA+degreeB]}
     """)
 
 
@@ -221,8 +210,68 @@ for i in tqdm(range(len(df))):
     9、	资格证书
     """)
 
+    # # 个人优势
+    # personAdvantage = inform.project[major]['personAdvantage']
+
+    # h1 = doc.add_heading("2 个人优势", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # doc.add_paragraph(personAdvantage)
+
+    # h1 = doc.add_heading("3 求职状态", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # doc.add_paragraph("在校-正在找工作")
+
+    # random_city = random.choice(inform.desire_city)
+
+    # h1 = doc.add_heading("4 求职意向", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # doc.add_paragraph(f"""
+    # 期望职位：{inform.tgt_career[major].desire_career}
+    # 期望行业：{inform.tgt_career[major].desire_industry}
+    # 求职偏好：空着不写
+    # 工作城市：北京、上海、广州、西安、{random_city}
+    # 薪资要求：{inform.desire_salary[major][degreeA+degreeB]}
+    # 工作性质：全职
+    # """)
+    # # {inform.desire_salary[major][level+degree]}
 
     
+    
+    # h1 = doc.add_heading("5 工作实习经历", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # doc.add_paragraph(f"""
+    # 职位名称：{proj["jobName"]}
+    # 公司名称：{proj['companyName']}
+    # 所属行业：{proj['industry']}
+    # 在职时间：{proj['workTime']}
+    # 工作内容：
+    # {proj['workDescription']}
+    # 拥有技能：{proj["skills"]}
+    # 当时月薪：{proj['salary']}
+    # （勾选此段经历为实习经历）
+    # 对这家公司隐藏我的信息（开启）
+    # """)
+
+    # # 项目经历,复用proj
+    # h1 = doc.add_heading("6 项目经历", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # doc.add_paragraph(proj["experience"])
+
+    
+
+    # h1 = doc.add_heading("8 专业技能", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # doc.add_paragraph(proj["professionalSkills"])
+
+
+    # h1 = doc.add_heading("9 资格证书", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # doc.add_paragraph(inform.certificate)
+
+
+    # h1 = doc.add_heading("10 学生干部经历", level=2)
+    # h1.alignment = WD_PARAGRAPH_ALIGNMENT.LEFT
+    # paragraph = doc.add_paragraph(inform.school_exp)
 
     # 设置字体
     # for paragraph in doc.paragraphs:
